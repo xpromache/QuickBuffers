@@ -24,6 +24,7 @@ import com.google.gson.stream.JsonWriter;
 import us.hebi.quickbuf.FieldName;
 import us.hebi.quickbuf.JsonSink;
 import us.hebi.quickbuf.ProtoMessage;
+import us.hebi.quickbuf.ProtoMessageIf;
 import us.hebi.quickbuf.Utf8String;
 
 import java.io.Closeable;
@@ -143,7 +144,7 @@ public class GsonSink extends JsonSink implements Closeable, Flushable {
     }
 
     @Override
-    protected void writeMessageValue(ProtoMessage<?> value) throws IOException {
+    protected void writeMessageValue(ProtoMessageIf<?> value) throws IOException {
         value.writeTo(this);
     }
 

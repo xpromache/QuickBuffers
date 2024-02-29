@@ -24,10 +24,10 @@ package us.hebi.quickbuf;
  * @author Florian Enner
  * @since 09 Aug 2019
  */
-public final class RepeatedMessage<MessageType extends ProtoMessage<MessageType>> extends RepeatedObject<RepeatedMessage<MessageType>, MessageType, MessageType, MessageType> {
+public final class RepeatedMessage<MessageType extends ProtoMessageIf<MessageType>> extends RepeatedObject<RepeatedMessage<MessageType>, MessageType, MessageType, MessageType> {
 
     @SuppressWarnings("unchecked")
-    public static <T extends ProtoMessage<T>> RepeatedMessage<T> newEmptyInstance(MessageFactory<T> factory) {
+    public static <T extends ProtoMessageIf<T>> RepeatedMessage<T> newEmptyInstance(MessageFactory<T> factory) {
         return new RepeatedMessage(factory);
     }
 
@@ -59,7 +59,7 @@ public final class RepeatedMessage<MessageType extends ProtoMessage<MessageType>
     @Override
     @SuppressWarnings("unchecked")
     protected final MessageType[] allocateArray0(int desiredSize) {
-        return (MessageType[]) new ProtoMessage[desiredSize];
+        return (MessageType[]) new ProtoMessageIf[desiredSize];
     }
 
     public final RepeatedMessage<MessageType> clearQuick() {

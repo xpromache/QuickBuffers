@@ -164,7 +164,7 @@ public abstract class JsonSink implements Closeable, Flushable {
     /**
      * Convenience overload for writing to in-memory sinks that don't throw IOException
      */
-    public JsonSink writeMessageSilent(ProtoMessage<?> value) {
+    public JsonSink writeMessageSilent(ProtoMessageIf<?> value) {
         try {
             return writeMessage(value);
         } catch (IOException e) {
@@ -186,7 +186,7 @@ public abstract class JsonSink implements Closeable, Flushable {
     /**
      * Writes a top level object {content}
      */
-    public JsonSink writeMessage(ProtoMessage<?> value) throws IOException {
+    public JsonSink writeMessage(ProtoMessageIf<?> value) throws IOException {
         value.writeTo(this);
         return this;
     }
@@ -235,7 +235,7 @@ public abstract class JsonSink implements Closeable, Flushable {
         return writeInt32(name, value);
     }
 
-    public JsonSink writeGroup(final FieldName name, final ProtoMessage value) throws IOException {
+    public JsonSink writeGroup(final FieldName name, final ProtoMessageIf value) throws IOException {
         return writeMessage(name, value);
     }
 
@@ -319,7 +319,7 @@ public abstract class JsonSink implements Closeable, Flushable {
         return this;
     }
 
-    public JsonSink writeMessage(final FieldName name, final ProtoMessage<?> value) throws IOException {
+    public JsonSink writeMessage(final FieldName name, final ProtoMessageIf<?> value) throws IOException {
         writeFieldName(name);
         writeMessageValue(value);
         return this;
@@ -469,7 +469,7 @@ public abstract class JsonSink implements Closeable, Flushable {
         writeString(str);
     }
 
-    protected abstract void writeMessageValue(ProtoMessage<?> value) throws IOException;
+    protected abstract void writeMessageValue(ProtoMessageIf<?> value) throws IOException;
 
     public abstract JsonSink beginObject() throws IOException;
 
@@ -601,7 +601,7 @@ public abstract class JsonSink implements Closeable, Flushable {
         }
 
         @Override
-        public void writeMessageValue(ProtoMessage<?> value) throws IOException {
+        public void writeMessageValue(ProtoMessageIf<?> value) throws IOException {
             value.writeTo(this);
             writeMore();
         }

@@ -64,14 +64,14 @@ public abstract class JsonSource implements Closeable {
     /**
      * Parses a root-level object of the given message type and checks for required field initialization
      */
-    public <ProtoMsg extends ProtoMessage<ProtoMsg>> ProtoMsg parseMessage(MessageFactory<ProtoMsg> factory) throws IOException {
+    public <ProtoMsg extends ProtoMessageIf<ProtoMsg>> ProtoMsg parseMessage(MessageFactory<ProtoMsg> factory) throws IOException {
         return readMessage(factory.create()).checkInitialized();
     }
 
     /**
      * Parses a root-level array of the given message type and checks for required field initialization
      */
-    public <ProtoMsg extends ProtoMessage<ProtoMsg>> RepeatedMessage<ProtoMsg> parseRepeatedMessage(MessageFactory<ProtoMsg> factory) throws IOException {
+    public <ProtoMsg extends ProtoMessageIf<ProtoMsg>> RepeatedMessage<ProtoMsg> parseRepeatedMessage(MessageFactory<ProtoMsg> factory) throws IOException {
         return readRepeatedMessage(RepeatedMessage.newEmptyInstance(factory)).checkInitialized();
     }
 
@@ -166,7 +166,7 @@ public abstract class JsonSource implements Closeable {
     /**
      * Reads a message value from the source and merges the contents into the provided message
      */
-    public <ProtoMsg extends ProtoMessage<ProtoMsg>> ProtoMsg readMessage(final ProtoMsg msg) throws IOException {
+    public <ProtoMsg extends ProtoMessageIf<ProtoMsg>> ProtoMsg readMessage(final ProtoMsg msg) throws IOException {
         msg.mergeFrom(this);
         return msg;
     }
@@ -209,7 +209,7 @@ public abstract class JsonSource implements Closeable {
     /**
      * Read a {@code group} field value from the source.
      */
-    public <ProtoMsg extends ProtoMessage<ProtoMsg>> ProtoMsg readGroup(final ProtoMsg msg) throws IOException {
+    public <ProtoMsg extends ProtoMessageIf<ProtoMsg>> ProtoMsg readGroup(final ProtoMsg msg) throws IOException {
         return readMessage(msg);
     }
 
@@ -316,7 +316,7 @@ public abstract class JsonSource implements Closeable {
         endArray();
     }
 
-    public <ProtoMsg extends ProtoMessage<ProtoMsg>> RepeatedMessage<ProtoMsg> readRepeatedMessage(final RepeatedMessage<ProtoMsg> value) throws IOException {
+    public <ProtoMsg extends ProtoMessageIf<ProtoMsg>> RepeatedMessage<ProtoMsg> readRepeatedMessage(final RepeatedMessage<ProtoMsg> value) throws IOException {
         beginArray();
         while (!isAtEnd()) {
             readMessage(value.next());

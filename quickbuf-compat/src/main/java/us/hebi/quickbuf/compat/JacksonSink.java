@@ -136,7 +136,7 @@ public class JacksonSink extends JsonSink {
     }
 
     @Override
-    protected void writeMessageValue(ProtoMessage<?> value) throws IOException {
+    protected void writeMessageValue(ProtoMessageIf<?> value) throws IOException {
         value.writeTo(this);
     }
 

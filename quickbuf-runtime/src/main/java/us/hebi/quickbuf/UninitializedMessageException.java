@@ -39,7 +39,7 @@ public class UninitializedMessageException extends RuntimeException {
 
     private static final long serialVersionUID = 0L;
 
-    public UninitializedMessageException(final ProtoMessage<?> message) {
+    public UninitializedMessageException(final ProtoMessageIf<?> message) {
         super("Message missing required fields");
         this.origin = message;
     }
@@ -74,7 +74,7 @@ public class UninitializedMessageException extends RuntimeException {
     }
 
     String description;
-    private ProtoMessage<?> origin;
+    private ProtoMessageIf<?> origin;
     private List<String> missingFields;
 
     /**

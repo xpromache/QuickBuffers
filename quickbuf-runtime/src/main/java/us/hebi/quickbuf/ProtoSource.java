@@ -739,7 +739,7 @@ public abstract class ProtoSource {
     }
 
     /** Read a {@code group} field value from the source. */
-    public void readGroup(final ProtoMessage<?> msg, final int fieldNumber) throws IOException {
+    public void readGroup(final ProtoMessageIf<?> msg, final int fieldNumber) throws IOException {
         if (recursionDepth >= recursionLimit) {
             throw InvalidProtocolBufferException.recursionLimitExceeded();
         }
@@ -759,7 +759,7 @@ public abstract class ProtoSource {
         return nextTag;
     }
 
-    public void readMessage(final ProtoMessage<?> msg) throws IOException {
+    public void readMessage(final ProtoMessageIf<?> msg) throws IOException {
         final int length = readLength();
         if (recursionDepth >= recursionLimit) {
             throw InvalidProtocolBufferException.recursionLimitExceeded();

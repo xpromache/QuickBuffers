@@ -296,7 +296,7 @@ public abstract class ProtoSink {
     }
 
     /** Write a {@code group} field, including tag, to the sink. */
-    public void writeGroup(final int fieldNumber, final ProtoMessage value)
+    public void writeGroup(final int fieldNumber, final ProtoMessageIf value)
             throws IOException {
         writeTag(fieldNumber, WireFormat.WIRETYPE_START_GROUP);
         writeGroupNoTag(value);
@@ -304,7 +304,7 @@ public abstract class ProtoSink {
     }
 
     /** Write an embedded message field, including tag, to the sink. */
-    public void writeMessage(final int fieldNumber, final ProtoMessage value)
+    public void writeMessage(final int fieldNumber, final ProtoMessageIf value)
             throws IOException {
         writeTag(fieldNumber, WireFormat.WIRETYPE_LENGTH_DELIMITED);
         writeMessageNoTag(value);
@@ -675,12 +675,12 @@ public abstract class ProtoSink {
     }
 
     /** Write a {@code group} field to the sink. */
-    public void writeGroupNoTag(final ProtoMessage<?> value) throws IOException {
+    public void writeGroupNoTag(final ProtoMessageIf<?> value) throws IOException {
         value.writeTo(this);
     }
 
     /** Write an embedded message field to the sink. */
-    public void writeMessageNoTag(final ProtoMessage<?> value) throws IOException {
+    public void writeMessageNoTag(final ProtoMessageIf<?> value) throws IOException {
         writeLength(value.getCachedSize());
         value.writeTo(this);
     }
@@ -803,7 +803,7 @@ public abstract class ProtoSink {
      * {@code group} field, including tag.
      */
     public static int computeGroupSize(final int fieldNumber,
-                                       final ProtoMessage<?> value) {
+                                       final ProtoMessageIf<?> value) {
         return computeTagSize(fieldNumber) * 2 + computeGroupSizeNoTag(value);
     }
 
@@ -812,7 +812,7 @@ public abstract class ProtoSink {
      * embedded message field, including tag.
      */
     public static int computeMessageSize(final int fieldNumber,
-                                         final ProtoMessage<?> value) {
+                                         final ProtoMessageIf<?> value) {
         return computeTagSize(fieldNumber) + computeMessageSizeNoTag(value);
     }
 
@@ -969,7 +969,7 @@ public abstract class ProtoSink {
      * Compute the number of bytes that would be needed to encode a
      * {@code group} field.
      */
-    public static int computeGroupSizeNoTag(final ProtoMessage value) {
+    public static int computeGroupSizeNoTag(final ProtoMessageIf value) {
         return value.getSerializedSize();
     }
 
@@ -977,7 +977,7 @@ public abstract class ProtoSink {
      * Compute the number of bytes that would be needed to encode an embedded
      * message field.
      */
-    public static int computeMessageSizeNoTag(final ProtoMessage value) {
+    public static int computeMessageSizeNoTag(final ProtoMessageIf value) {
         final int size = value.getSerializedSize();
         return computeRawVarint32Size(size) + size;
     }

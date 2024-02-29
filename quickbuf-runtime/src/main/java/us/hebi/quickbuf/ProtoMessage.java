@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author Florian Enner
  */
-public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
+public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> implements ProtoMessageIf<MessageType> {
 
     private static final long serialVersionUID = 0L;
     protected int cachedSize = -1;
@@ -365,18 +365,22 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     protected void getMissingFields(String prefix, List<String> results) {
     }
 
-    protected static void getMissingFields(String prefix, String fieldName, ProtoMessage<?> field, List<String> results) {
+    protected static void getMissingFields(String prefix, String fieldName, ProtoMessageIf<?> field, List<String> results) {
         if (!field.isInitialized()) {
-            field.getMissingFields(prefix + fieldName + ".", results);
+        	addMissingFields(field, prefix + fieldName + ".", results);
         }
     }
 
     protected static void getMissingFields(String prefix, String fieldName, RepeatedMessage<?> field, List<String> results) {
         for (int i = 0; i < field.length; i++) {
             if (!field.array[i].isInitialized()) {
-                field.array[i].getMissingFields(prefix + fieldName + "[" + i + "].", results);
+            	addMissingFields(field.array[i], prefix + fieldName + "[" + i + "].", results);
             }
         }
+    }
+    
+    private static void addMissingFields(ProtoMessageIf<?> field, String prefix, List<String> results) {
+    	results.addAll(field.getMissingFields());
     }
 
     protected UninitializedMessageException rethrowFromParent(UninitializedMessageException ex) {
